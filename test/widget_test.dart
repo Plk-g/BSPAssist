@@ -1,30 +1,28 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:new_app/main.dart';
+import 'package:new_app/pages/Dashboard/dashboard.dart';
+import 'package:new_app/pages/login_page.dart';
+import 'package:new_app/pages/register.dart';
+import 'package:new_app/pages/splash_screen.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('Initial route is determined correctly', (WidgetTester tester) async {
+    // Build the app and trigger a frame.
+    await tester.pumpWidget(MaterialApp(
+      home: SplashScreen(), // Use the appropriate initial widget
+      routes: {
+        '/': (context) => SplashScreen(),
+        'login': (context) => LoginPage(),
+        'register': (context) => MyRegister(),
+        'dashboard': (context) => DashboardApp(),
+      },
+    ));
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Verify that the initial route is set correctly.
+    // For this test, we're assuming that the initial widget is SplashScreen.
+    expect(find.byType(SplashScreen), findsOneWidget);
+    expect(find.byType(LoginPage), findsNothing);
+    expect(find.byType(MyRegister), findsNothing);
+    expect(find.byType(DashboardApp), findsNothing);
   });
 }
